@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuesioner Penggunaan AI dalam Pembelajaran Matematika</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
+
+    <!-- Navbar / Header -->
+    <header class="bg-white border-b border-slate-100 sticky top-0 z-40 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-xl shadow-md shadow-indigo-100">
+                    <i class="fa-solid fa-square-poll-vertical text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-slate-900 tracking-tight leading-none text-base sm:text-lg">EduAI Survey</h1>
+                    <span class="text-xs text-slate-500">Evaluasi Penggunaan AI di Kelas Matematika</span>
+                </div>
+            </div>
+            
+            <!-- Navigation Tabs -->
+            <div class="flex bg-slate-100 p-1 rounded-xl">
+                <button id="tab-survey-btn" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-white text-indigo-600 shadow-sm">
+                    <i class="fa-solid fa-pen-to-square mr-2"></i>Isi Kuesioner
+                </button>
+                <button id="tab-dashboard-btn" class="px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900 ml-1">
+                    <i class="fa-solid fa-chart-pie mr-2"></i>Statistik <span id="nav-count-badge" class="ml-1 px-1.5 py-0.5 text-xs bg-indigo-100 text-indigo-700 rounded-full font-bold">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- ================= TAB 1: SURVEY FORM ================= -->
+        <section id="survey-section" class="block transition-all duration-300">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- Left Sticky Instructions -->
+                <div class="lg:col-span-1">
+                    <div class="bg-gradient-to-br from-indigo-900 to-slate-900 text-white rounded-3xl p-6 shadow-xl shadow-indigo-950/20 sticky top-24">
+                        <span class="bg-indigo-500/30 text-indigo-200 text-xs font-semibold px-2.5 py-1 rounded-full border border-indigo-400/20">Panduan Pengisian</span>
+                        <h2 class="text-2xl font-bold mt-4 leading-tight">Pendapat Anda Sangat Berharga!</h2>
+                        <p class="text-slate-300 text-sm mt-3 leading-relaxed">
+                            Kuesioner ini dirancang untuk mengukur sejauh mana kecerdasan buatan (AI) membantu Anda dalam proses belajar matematika.
+                        </p>
+                        
+                        <div class="mt-6 space-y-4 border-t border-slate-700/50 pt-6 text-xs text-slate-300">
+                            <div class="flex items-start space-x-3">
+                                <div class="bg-indigo-500/20 text-indigo-300 p-1.5 rounded-lg mt-0.5">A</div>
+                                <div><strong class="text-white block">Sangat Setuju (SS)</strong> Jika pernyataan sangat sesuai dengan kenyataan Anda.</div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="bg-indigo-500/20 text-indigo-300 p-1.5 rounded-lg mt-0.5">B</div>
+                                <div><strong class="text-white block">Setuju (S)</strong> Jika pernyataan cukup menggambarkan situasi Anda.</div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="bg-indigo-500/20 text-indigo-300 p-1.5 rounded-lg mt-0.5">C</div>
+                                <div><strong class="text-white block">Tidak Setuju (TS)</strong> Jika pernyataan kurang sesuai dengan Anda.</div>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="bg-indigo-500/20 text-indigo-300 p-1.5 rounded-lg mt-0.5">D</div>
+                                <div><strong class="text-white block">Sangat Tidak Setuju (STS)</strong> Jika pernyataan tidak mencerminkan Anda sama sekali.</div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 pt-4 border-t border-slate-700/50 flex justify-between items-center">
+                            <span class="text-xs text-slate-400">Status Database</span>
+                            <span id="db-status-badge" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-400/20 text-amber-300">
+                                <span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-amber-400 animate-pulse"></span>Menghubungkan...
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Questionnaire Form -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Identity Card -->
+                    <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm">
+                        <h3 class="text-lg font-bold text-slate-900 mb-4"><i class="fa-solid fa-user-astronaut mr-2 text-indigo-500"></i>Identitas Responden (Opsional)</h3>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <div>
+                                <label for="respondent-name" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Nama Lengkap</label>
+                                <input type="text" id="respondent-name" placeholder="Misal: Budi Santoso" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm">
+                            </div>
+                            <div>
+                                <label for="respondent-class" class="block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2">Kelas / Instansi</label>
+                                <input type="text" id="respondent-class" placeholder="Misal: Kelas XII IPA 1" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all text-sm">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Progress Indicator Floating -->
+                    <div class="bg-white rounded-2xl p-4 border border-slate-100 shadow-sm flex items-center justify-between sticky top-16 z-30">
+                        <div class="flex items-center space-x-3">
+                            <div class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-lg" id="answered-badge">0 / 20 Terjawab</div>
+                        </div>
+                        <div class="w-2/3 bg-slate-100 rounded-full h-2 overflow-hidden">
+                            <div id="survey-progress" class="bg-indigo-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Form with 20 Questions -->
+                    <form id="kuesioner-form" class="space-y-6">
+                        <!-- Questions will be injected dynamically here -->
+                        <div id="questions-container" class="space-y-6"></div>
+
+                        <!-- Submit Button -->
+                        <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-4">
+                            <div class="text-left">
+                                <span class="text-sm font-semibold text-slate-500">Pastikan semua jawaban terisi</span>
+                                <p class="text-xs text-slate-400 mt-1">Sistem akan langsung mendata secara real-time setelah tombol ditekan.</p>
+                            </div>
+                            <button type="submit" id="submit-btn" class="w-full sm:w-auto px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl shadow-lg shadow-indigo-200 hover:shadow-indigo-300 transition-all duration-200 flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Kirim Jawaban Kuesioner</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ================= TAB 2: DASHBOARD & STATS ================= -->
+        <section id="dashboard-section" class="hidden transition-all duration-300 space-y-8">
+            <!-- Key Metrics Overview -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Total Responden Card -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Total Pengisi</span>
+                        <h3 class="text-4xl font-extrabold text-slate-900 mt-2" id="stats-total-respondents">0</h3>
+                        <span class="text-xs text-indigo-600 font-medium inline-flex items-center mt-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500 mr-1.5 animate-pulse"></span> Live Update Aktif
+                        </span>
+                    </div>
+                    <div class="bg-indigo-50 text-indigo-600 p-4 rounded-2xl">
+                        <i class="fa-solid fa-users text-2xl"></i>
+                    </div>
+                </div>
+
+                <!-- Sangat Setuju Card -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Sangat Setuju (SS)</span>
+                        <h3 class="text-3xl font-extrabold text-emerald-600 mt-2" id="stats-ss-percent">0%</h3>
+                        <span class="text-xs text-slate-500 mt-2 block">Dari seluruh jawaban kuesioner</span>
+                    </div>
+                    <div class="bg-emerald-50 text-emerald-600 p-4 rounded-2xl">
+                        <i class="fa-solid fa-circle-check text-2xl"></i>
+                    </div>
+                </div>
+
+                <!-- Setuju Card -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Setuju (S)</span>
+                        <h3 class="text-3xl font-extrabold text-blue-600 mt-2" id="stats-s-percent">0%</h3>
+                        <span class="text-xs text-slate-500 mt-2 block">Cukup mendukung pemanfaatan AI</span>
+                    </div>
+                    <div class="bg-blue-50 text-blue-600 p-4 rounded-2xl">
+                        <i class="fa-solid fa-thumbs-up text-2xl"></i>
+                    </div>
+                </div>
+
+                <!-- Kurang Setuju Card (Tidak Setuju + STS) -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex items-center justify-between">
+                    <div>
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Tidak Setuju/STS</span>
+                        <h3 class="text-3xl font-extrabold text-amber-500 mt-2" id="stats-ts-percent">0%</h3>
+                        <span class="text-xs text-slate-500 mt-2 block">Membutuhkan evaluasi lebih</span>
+                    </div>
+                    <div class="bg-amber-50 text-amber-500 p-4 rounded-2xl">
+                        <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Analysis Table and Participant List -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Left: Question Breakdown Stats Table (2/3 width) -->
+                <div class="lg:col-span-2 bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-slate-100 bg-slate-50/50">
+                        <h3 class="text-lg font-bold text-slate-900">Analisis Distribusi Jawaban per Pertanyaan</h3>
+                        <p class="text-xs text-slate-500 mt-1">Tabel persentase respons dari seluruh pengisi kuesioner secara real-time.</p>
+                    </div>
+
+                    <!-- Responsive Table Container -->
+                    <div class="overflow-x-auto custom-scrollbar max-h-[600px] overflow-y-auto">
+                        <table class="w-full text-left border-collapse min-w-[700px]">
+                            <thead>
+                                <tr class="border-b border-slate-100 bg-slate-50/70 text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+                                    <th class="p-4 text-center w-12">No</th>
+                                    <th class="p-4">Pertanyaan</th>
+                                    <th class="p-4 text-center bg-emerald-50 text-emerald-700 w-20">SS (A)</th>
+                                    <th class="p-4 text-center bg-blue-50 text-blue-700 w-20">S (B)</th>
+                                    <th class="p-4 text-center bg-amber-50 text-amber-700 w-20">TS (C)</th>
+                                    <th class="p-4 text-center bg-rose-50 text-rose-700 w-20">STS (D)</th>
+                                    <th class="p-4 text-center w-20">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stats-table-body" class="divide-y divide-slate-100 text-sm text-slate-700">
+                                <!-- Table rows will be loaded here dynamically -->
+                                <tr>
+                                    <td colspan="7" class="text-center py-12 text-slate-400">
+                                        <i class="fa-solid fa-database text-3xl mb-3 animate-bounce"></i>
+                                        <p class="text-xs">Menghitung data kuesioner dari database...</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Right: Participant Log and Export -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="font-bold text-slate-900 text-sm uppercase tracking-wider">Log Responden Terkini</h4>
+                            <span class="text-xs text-slate-400" id="responden-log-count">0 Terdaftar</span>
+                        </div>
+                        <div id="respondent-log" class="space-y-3 max-h-[350px] overflow-y-auto custom-scrollbar pr-1">
+                            <!-- Injected dynamically -->
+                            <div class="text-center py-8 text-slate-400 text-sm">
+                                <i class="fa-solid fa-receipt text-2xl mb-2"></i>
+                                <p>Belum ada pengisi kuesioner.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reset & Export Card -->
+                    <div class="bg-gradient-to-br from-slate-800 to-slate-950 text-white rounded-3xl p-6 shadow-xl">
+                        <h4 class="font-bold text-sm uppercase tracking-wider">Kontrol & Ekspor Data</h4>
+                        <p class="text-slate-400 text-xs mt-2 leading-relaxed">Ekspor seluruh rekaman data kuesioner Anda menjadi format tabel JSON/CSV instan.</p>
+                        <div class="mt-6 space-y-3">
+                            <button id="export-json-btn" class="w-full py-3 px-4 bg-slate-700 hover:bg-slate-600 rounded-xl text-sm font-semibold transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-file-code"></i>
+                                <span>Salin JSON Data</span>
+                            </button>
+                            <button id="export-csv-btn" class="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl text-sm font-semibold transition-all flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-file-csv"></i>
+                                <span>Ekspor Format CSV</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal Success Submission -->
+    <div id="success-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl transition-all scale-95 transform">
+            <div class="w-20 h-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-slate-900">Terima Kasih!</h3>
+            <p class="text-slate-500 text-sm mt-3 leading-relaxed">Jawaban kuesioner Anda berhasil dikirim dan tersimpan di database sistem kami secara aman.</p>
+            <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <button id="modal-view-stats-btn" class="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all">
+                    Lihat Hasil Statistik
+                </button>
+                <button id="modal-close-btn" class="w-full py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-xl transition-all">
+                    Isi Lagi (Baru)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-xl flex items-center space-x-3 translate-y-20 opacity-0 transition-all duration-300 z-50 text-sm">
+        <span id="toast-icon" class="text-indigo-400"><i class="fa-solid fa-circle-info"></i></span>
+        <span id="toast-text">Pemberitahuan sistem...</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-100 py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400">
+            <p>&copy; 2026 Kuesioner Evaluasi AI Matematika. Didukung oleh Firebase Cloud Firestore.</p>
+        </div>
+    </footer>
+
+    <!-- Firebase SDK Modular Scripts and App logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, addDoc, collection, onSnapshot, query, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // APP ID Unik untuk identifikasi database
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'kuesioner-ai-matematika-01';
+        
+        // Pengecekan Aman Firebase Config (Mencegah crash jika berjalan lokal di VS Code)
+        let useFirebase = false;
+        let firebaseConfig = null;
+        let db = null;
+        let auth = null;
+
+        // JIKA Anda ingin menghubungkan ke Firebase Anda sendiri secara online, paste config Anda di dalam variabel di bawah ini:
+        const MyPersonalFirebaseConfig = null; // Contoh: { apiKey: "...", authDomain: "...", projectId: "..." }
+
+        if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+            try {
+                firebaseConfig = JSON.parse(__firebase_config);
+                useFirebase = true;
+            } catch (e) {
+                console.error("Gagal mengurai config Firebase bawaan:", e);
+            }
+        } else if (MyPersonalFirebaseConfig) {
+            firebaseConfig = MyPersonalFirebaseConfig;
+            useFirebase = true;
+        }
+
+        // Inisialisasi Firebase jika config tersedia
+        if (useFirebase && firebaseConfig) {
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+            } catch (err) {
+                console.error("Gagal inisialisasi Firebase SDK:", err);
+                useFirebase = false;
+            }
+        }
+
+        let currentUser = null;
+        let allSubmissions = [];
+
+        // Struktur 20 Pertanyaan Kuesioner
+        const questionnaireData = [
+            { id: 1, category: "Kemudahan Penggunaan AI", text: "AI mudah digunakan dalam pembelajaran matematika." },
+            { id: 2, category: "Kemudahan Penggunaan AI", text: "Saya tidak kesulitan memahami cara kerja AI." },
+            { id: 3, category: "Kemudahan Penggunaan AI", text: "AI membantu saya belajar matematika secara mandiri." },
+            { id: 4, category: "Kemudahan Penggunaan AI", text: "AI membantu saya memahami materi matematika dengan lebih baik." },
+            { id: 5, category: "Kemudahan Penggunaan AI", text: "Penjelasan dari AI mudah dipahami." },
+            { id: 6, category: "Efektivitas AI dalam Belajar", text: "AI membantu saya menyelesaikan soal yang sulit." },
+            { id: 7, category: "Efektivitas AI dalam Belajar", text: "AI membantu saya menghemat waktu belajar." },
+            { id: 8, category: "Efektivitas AI dalam Belajar", text: "Saya dapat menyelesaikan tugas matematika lebih cepat dengan AI." },
+            { id: 9, category: "Efektivitas AI dalam Belajar", text: "AI membuat proses belajar menjadi lebih efisien." },
+            { id: 10, category: "Efektivitas AI dalam Belajar", text: "Penggunaan AI membuat saya lebih tertarik belajar matematika." },
+            { id: 11, category: "Motivasi dan Minat Belajar", text: "Saya merasa lebih semangat belajar dengan bantuan AI." },
+            { id: 12, category: "Motivasi dan Minat Belajar", text: "AI membuat pembelajaran matematika tidak membosankan." },
+            { id: 13, category: "Motivasi dan Minat Belajar", text: "Nilai matematika saya meningkat setelah menggunakan AI." },
+            { id: 14, category: "Motivasi dan Minat Belajar", text: "Saya merasa lebih percaya diri dalam mengerjakan soal matematika." },
+            { id: 15, category: "Motivasi dan Minat Belajar", text: "AI memberikan dampak positif terhadap hasil belajar saya." },
+            { id: 16, category: "Pertanyaan Tambahan", text: "AI membantu saya menemukan cara baru dalam menyelesaikan soal matematika." },
+            { id: 17, category: "Pertanyaan Tambahan", text: "Saya lebih aktif belajar matematika sejak menggunakan AI." },
+            { id: 18, category: "Pertanyaan Tambahan", text: "AI membantu saya memahami langkah-langkah penyelesaian soal dengan jelas." },
+            { id: 19, category: "Pertanyaan Tambahan", text: "Saya merasa penggunaan AI membuat belajar matematika lebih praktis." },
+            { id: 20, category: "Pertanyaan Tambahan", text: "Saya ingin terus menggunakan AI dalam pembelajaran matematika." }
+        ];
+
+        const options = [
+            { key: "A", text: "Sangat Setuju" },
+            { key: "B", text: "Setuju" },
+            { key: "C", text: "Tidak Setuju" },
+            { key: "D", text: "Sangat Tidak Setuju" }
+        ];
+
+        // Toast Helper
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastText = document.getElementById('toast-text');
+            const toastIcon = document.getElementById('toast-icon');
+
+            toastText.textContent = message;
+            toastIcon.innerHTML = isError 
+                ? '<i class="fa-solid fa-circle-exclamation text-rose-500"></i>' 
+                : '<i class="fa-solid fa-circle-check text-emerald-500"></i>';
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 3500);
+        }
+
+        // Render Questions
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = "";
+
+            let currentCategory = "";
+
+            questionnaireData.forEach((q, index) => {
+                if (q.category !== currentCategory) {
+                    currentCategory = q.category;
+                    const catHeader = document.createElement('div');
+                    catHeader.className = "pt-6 pb-2 border-b border-slate-100 first:pt-0";
+                    catHeader.innerHTML = `
+                        <h4 class="text-sm font-extrabold text-indigo-600 uppercase tracking-widest flex items-center">
+                            <span class="w-1.5 h-3 bg-indigo-600 rounded-sm mr-2 block"></span>
+                            ${q.category}
+                        </h4>
+                    `;
+                    container.appendChild(catHeader);
+                }
+
+                const qBox = document.createElement('div');
+                qBox.className = "bg-white rounded-3xl p-5 sm:p-6 border border-slate-100 shadow-sm hover:border-indigo-100 hover:shadow-md transition-all duration-200";
+                qBox.id = `q-card-${q.id}`;
+                
+                let optionsHtml = "";
+                options.forEach(opt => {
+                    optionsHtml += `
+                        <label class="flex items-center space-x-3 p-3.5 bg-slate-50 border border-slate-200/80 rounded-2xl cursor-pointer hover:bg-indigo-50/30 hover:border-indigo-200 transition-all select-none">
+                            <input type="radio" name="question-${q.id}" value="${opt.key}" required 
+                                class="w-4 h-4 text-indigo-600 border-slate-300 focus:ring-indigo-500 rounded-full cursor-pointer"
+                                onchange="this.dispatchEvent(new CustomEvent('answer-updated', {bubbles: true}))">
+                            <div class="flex-grow">
+                                <span class="text-xs font-bold text-slate-500 mr-2 bg-white px-2 py-0.5 rounded border border-slate-200">${opt.key}</span>
+                                <span class="text-sm font-semibold text-slate-700">${opt.text}</span>
+                            </div>
+                        </label>
+                    `;
+                });
+
+                qBox.innerHTML = `
+                    <div class="flex items-start space-x-3 mb-4">
+                        <span class="bg-indigo-50 text-indigo-700 text-xs font-bold px-2.5 py-1 rounded-xl">No. ${q.id}</span>
+                    </div>
+                    <p class="text-base font-bold text-slate-900 leading-snug mb-4">${q.text}</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        ${optionsHtml}
+                    </div>
+                `;
+
+                container.appendChild(qBox);
+            });
+        }
+
+        // Tab Switching Logic
+        const tabSurveyBtn = document.getElementById('tab-survey-btn');
+        const tabDashboardBtn = document.getElementById('tab-dashboard-btn');
+        const surveySection = document.getElementById('survey-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+
+        tabSurveyBtn.addEventListener('click', () => {
+            tabSurveyBtn.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-white text-indigo-600 shadow-sm";
+            tabDashboardBtn.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900 ml-1";
+            surveySection.classList.remove('hidden');
+            dashboardSection.classList.add('hidden');
+        });
+
+        tabDashboardBtn.addEventListener('click', () => {
+            tabDashboardBtn.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 bg-white text-indigo-600 shadow-sm";
+            tabSurveyBtn.className = "px-4 py-2 text-sm font-semibold rounded-lg transition-all duration-200 text-slate-600 hover:text-slate-900 ml-1";
+            dashboardSection.classList.remove('hidden');
+            surveySection.classList.add('hidden');
+        });
+
+        // Load Submissions from LocalStorage
+        function loadLocalStorageSubmissions() {
+            const data = localStorage.getItem(`submissions_${appId}`);
+            if (data) {
+                try {
+                    allSubmissions = JSON.parse(data);
+                } catch (e) {
+                    allSubmissions = [];
+                }
+            } else {
+                allSubmissions = [];
+            }
+            updateStatsDashboard();
+            updateRespondentLog();
+        }
+
+        // Initialize Auth / Local Mode
+        const initAuth = async () => {
+            if (!useFirebase) {
+                // VS Code Local Mode Fallback
+                console.log("Menjalankan dalam Mode Lokal (VS Code/Browser Lokal)");
+                document.getElementById('db-status-badge').className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-400/20 text-amber-500";
+                document.getElementById('db-status-badge').innerHTML = '<span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-amber-500 animate-pulse"></span>Mode Lokal (VS Code)';
+                loadLocalStorageSubmissions();
+                return;
+            }
+
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.warn("Koneksi Firebase gagal, mengalihkan ke Mode Lokal:", err);
+                useFirebase = false;
+                document.getElementById('db-status-badge').className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-400/20 text-amber-500";
+                document.getElementById('db-status-badge').innerHTML = '<span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-amber-500 animate-pulse"></span>Mode Lokal';
+                loadLocalStorageSubmissions();
+            }
+        };
+
+        // Firebase Auth listener
+        if (useFirebase && auth) {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    currentUser = user;
+                    document.getElementById('db-status-badge').className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-400/20 text-emerald-400";
+                    document.getElementById('db-status-badge').innerHTML = '<span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-emerald-400 animate-ping"></span>Koneksi Cloud';
+                    startRealtimeListening();
+                } else {
+                    currentUser = null;
+                    document.getElementById('db-status-badge').className = "inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-400/20 text-amber-300";
+                    document.getElementById('db-status-badge').innerHTML = '<span class="w-1.5 h-1.5 mr-1.5 rounded-full bg-amber-400 animate-pulse"></span>Koneksi Ulang...';
+                }
+            });
+        }
+
+        // Start Auth Check
+        initAuth();
+
+        // Realtime Listener for Cloud Firebase
+        function startRealtimeListening() {
+            if (!currentUser || !useFirebase) return;
+
+            const submissionsCollection = collection(db, 'artifacts', appId, 'public', 'data', 'submissions');
+            
+            onSnapshot(submissionsCollection, (snapshot) => {
+                allSubmissions = [];
+                snapshot.forEach((doc) => {
+                    allSubmissions.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+                
+                // Sort by timestamp
+                allSubmissions.sort((a, b) => {
+                    const timeA = a.timestamp?.seconds || 0;
+                    const timeB = b.timestamp?.seconds || 0;
+                    return timeB - timeA;
+                });
+
+                updateStatsDashboard();
+                updateRespondentLog();
+            }, (error) => {
+                console.error("Firestore error:", error);
+                showToast("Mengalihkan ke penyimpanan lokal akibat gangguan sinkronisasi.", true);
+                useFirebase = false;
+                loadLocalStorageSubmissions();
+            });
+        }
+
+        // Live stats calculation and table rendering
+        function updateStatsDashboard() {
+            const total = allSubmissions.length;
+            document.getElementById('stats-total-respondents').textContent = total;
+            document.getElementById('nav-count-badge').textContent = total;
+            document.getElementById('responden-log-count').textContent = `${total} Terdaftar`;
+
+            if (total === 0) {
+                renderEmptyStats();
+                return;
+            }
+
+            let ssCount = 0;
+            let sCount = 0;
+            let tsCount = 0;
+            let stsCount = 0;
+            let grandTotalAnswers = 0;
+
+            const qStats = {};
+            questionnaireData.forEach(q => {
+                qStats[q.id] = { A: 0, B: 0, C: 0, D: 0 };
+            });
+
+            allSubmissions.forEach(sub => {
+                const ans = sub.answers || {};
+                Object.keys(ans).forEach(qId => {
+                    const val = ans[qId];
+                    if (qStats[qId] && ['A', 'B', 'C', 'D'].includes(val)) {
+                        qStats[qId][val]++;
+                        grandTotalAnswers++;
+                        if (val === 'A') ssCount++;
+                        if (val === 'B') sCount++;
+                        if (val === 'C') tsCount++;
+                        if (val === 'D') stsCount++;
+                    }
+                });
+            });
+
+            const ssPercent = Math.round((ssCount / grandTotalAnswers) * 100) || 0;
+            const sPercent = Math.round((sCount / grandTotalAnswers) * 100) || 0;
+            const tsPercent = Math.round(((tsCount + stsCount) / grandTotalAnswers) * 100) || 0;
+
+            document.getElementById('stats-ss-percent').textContent = `${ssPercent}%`;
+            document.getElementById('stats-s-percent').textContent = `${sPercent}%`;
+            document.getElementById('stats-ts-percent').textContent = `${tsPercent}%`;
+
+            const container = document.getElementById('stats-table-body');
+            container.innerHTML = "";
+
+            questionnaireData.forEach(q => {
+                const stat = qStats[q.id];
+                const qTotal = stat.A + stat.B + stat.C + stat.D || 1;
+
+                const pctSS = Math.round((stat.A / qTotal) * 100);
+                const pctS = Math.round((stat.B / qTotal) * 100);
+                const pctTS = Math.round((stat.C / qTotal) * 100);
+                const pctSTS = Math.round((stat.D / qTotal) * 100);
+
+                const item = document.createElement('tr');
+                item.className = "hover:bg-slate-50/70 transition-colors";
+                item.innerHTML = `
+                    <td class="p-4 font-bold text-center text-slate-500 border-b border-slate-100">${q.id}</td>
+                    <td class="p-4 border-b border-slate-100">
+                        <div class="font-bold text-slate-900 leading-snug text-sm">${q.text}</div>
+                        <div class="text-[10px] text-indigo-600 font-bold mt-1 uppercase tracking-wider">${q.category}</div>
+                    </td>
+                    <td class="p-4 text-center bg-emerald-50/20 border-b border-slate-100">
+                        <span class="font-extrabold text-emerald-600 block text-base">${stat.A}</span>
+                        <span class="text-[10px] text-slate-500 font-medium">(${pctSS}%)</span>
+                    </td>
+                    <td class="p-4 text-center bg-blue-50/20 border-b border-slate-100">
+                        <span class="font-extrabold text-blue-600 block text-base">${stat.B}</span>
+                        <span class="text-[10px] text-slate-500 font-medium">(${pctS}%)</span>
+                    </td>
+                    <td class="p-4 text-center bg-amber-50/20 border-b border-slate-100">
+                        <span class="font-extrabold text-amber-600 block text-base">${stat.C}</span>
+                        <span class="text-[10px] text-slate-500 font-medium">(${pctTS}%)</span>
+                    </td>
+                    <td class="p-4 text-center bg-rose-50/20 border-b border-slate-100">
+                        <span class="font-extrabold text-rose-600 block text-base">${stat.D}</span>
+                        <span class="text-[10px] text-slate-500 font-medium">(${pctSTS}%)</span>
+                    </td>
+                    <td class="p-4 text-center font-bold text-slate-700 border-b border-slate-100 bg-slate-50/30">${qTotal}</td>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function renderEmptyStats() {
+            const container = document.getElementById('stats-table-body');
+            container.innerHTML = `
+                <tr>
+                    <td colspan="7" class="text-center py-16 text-slate-400">
+                        <div class="max-w-xs mx-auto">
+                            <i class="fa-solid fa-cloud-arrow-down text-3xl mb-3"></i>
+                            <p class="font-semibold text-slate-600">Belum Ada Data Terkirim</p>
+                            <p class="text-xs text-slate-400 mt-1">Isi kuesioner terlebih dahulu untuk melihat tabel distribusi jawaban.</p>
+                        </div>
+                    </td>
+                </tr>
+            `;
+            document.getElementById('stats-ss-percent').textContent = "0%";
+            document.getElementById('stats-s-percent').textContent = "0%";
+            document.getElementById('stats-ts-percent').textContent = "0%";
+        }
+
+        // Render recent respondents log
+        function updateRespondentLog() {
+            const logContainer = document.getElementById('respondent-log');
+            logContainer.innerHTML = "";
+
+            if (allSubmissions.length === 0) {
+                logContainer.innerHTML = `
+                    <div class="text-center py-8 text-slate-400 text-sm">
+                        <i class="fa-solid fa-receipt text-2xl mb-2"></i>
+                        <p>Belum ada pengisi kuesioner.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            allSubmissions.slice(0, 15).forEach((sub, idx) => {
+                const name = sub.name || "Responden Anonim";
+                const classes = sub.respondentClass || "Tidak menyebutkan kelas";
+                const dateObj = sub.timestamp?.seconds ? new Date(sub.timestamp.seconds * 1000) : new Date();
+                
+                const formattedTime = dateObj.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+                const formattedDate = dateObj.toLocaleDateString('id-ID', { month: 'short', day: 'numeric' });
+
+                const card = document.createElement('div');
+                card.className = "p-3 bg-slate-50 border border-slate-100 rounded-2xl flex justify-between items-center";
+                card.innerHTML = `
+                    <div class="flex items-center space-x-3 max-w-[70%]">
+                        <div class="bg-indigo-100 text-indigo-700 w-8 h-8 rounded-xl flex items-center justify-center font-bold text-xs flex-shrink-0">
+                            ${name.charAt(0).toUpperCase()}
+                        </div>
+                        <div class="min-w-0">
+                            <h5 class="text-xs font-bold text-slate-800 truncate" title="${name}">${name}</h5>
+                            <span class="text-[10px] text-slate-500 block truncate" title="${classes}">${classes}</span>
+                        </div>
+                    </div>
+                    <div class="text-right text-[10px] text-slate-400 flex-shrink-0">
+                        <span class="font-bold text-slate-600 block">${formattedTime}</span>
+                        <span>${formattedDate}</span>
+                    </div>
+                `;
+                logContainer.appendChild(card);
+            });
+        }
+
+        // Handle Questionnaire Progress Indicators
+        document.getElementById('questions-container').addEventListener('answer-updated', () => {
+            const answers = getFormData();
+            const answeredCount = Object.keys(answers).length;
+            const progressPct = (answeredCount / 20) * 100;
+
+            document.getElementById('answered-badge').textContent = `${answeredCount} / 20 Terjawab`;
+            document.getElementById('survey-progress').style.width = `${progressPct}%`;
+        });
+
+        // Get filled options in form
+        function getFormData() {
+            const answers = {};
+            questionnaireData.forEach(q => {
+                const selected = document.querySelector(`input[name="question-${q.id}"]:checked`);
+                if (selected) {
+                    answers[q.id] = selected.value;
+                }
+            });
+            return answers;
+        }
+
+        // Handle Form Submit
+        document.getElementById('kuesioner-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const answers = getFormData();
+            const answeredCount = Object.keys(answers).length;
+
+            if (answeredCount < 20) {
+                showToast("Harap isi semua 20 pertanyaan kuesioner!", true);
+                
+                // Highlight unanswered
+                questionnaireData.forEach(q => {
+                    const el = document.getElementById(`q-card-${q.id}`);
+                    if (!answers[q.id]) {
+                        el.classList.add('border-rose-400', 'bg-rose-50/10');
+                    } else {
+                        el.classList.remove('border-rose-400', 'bg-rose-50/10');
+                    }
+                });
+
+                // Scroll to first unanswered
+                const firstUnanswered = questionnaireData.find(q => !answers[q.id]);
+                if (firstUnanswered) {
+                    document.getElementById(`q-card-${firstUnanswered.id}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                return;
+            }
+
+            const submitBtn = document.getElementById('submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner animate-spin mr-2"></i>Mengirim...';
+
+            const respondentName = document.getElementById('respondent-name').value.trim();
+            const respondentClass = document.getElementById('respondent-class').value.trim();
+
+            const payload = {
+                name: respondentName || "Anonim",
+                respondentClass: respondentClass || "Umum",
+                answers: answers,
+                timestamp: { seconds: Math.floor(Date.now() / 1000) }
+            };
+
+            // JIKA Berada di Mode Lokal (Offline / VS Code)
+            if (!useFirebase) {
+                payload.id = "local_" + Date.now();
+                allSubmissions.unshift(payload);
+                localStorage.setItem(`submissions_${appId}`, JSON.stringify(allSubmissions));
+                
+                setTimeout(() => {
+                    updateStatsDashboard();
+                    updateRespondentLog();
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Kirim Jawaban Kuesioner';
+                    
+                    document.getElementById('success-modal').classList.remove('hidden');
+                    document.getElementById('success-modal').classList.add('flex');
+                }, 400);
+                return;
+            }
+
+            // JIKA Berada di Mode Cloud Firebase
+            try {
+                const submissionsCol = collection(db, 'artifacts', appId, 'public', 'data', 'submissions');
+                await addDoc(submissionsCol, {
+                    uid: currentUser.uid,
+                    ...payload,
+                    timestamp: new Date() // true Firestore timestamp
+                });
+
+                document.getElementById('success-modal').classList.remove('hidden');
+                document.getElementById('success-modal').classList.add('flex');
+            } catch (err) {
+                console.error("Submission error:", err);
+                showToast("Gagal mengirim kuesioner ke database cloud. Coba lagi.", true);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane mr-2"></i>Kirim Jawaban Kuesioner';
+            }
+        });
+
+        // Modal Action: Close & Reset Form
+        document.getElementById('modal-close-btn').addEventListener('click', () => {
+            document.getElementById('success-modal').classList.add('hidden');
+            document.getElementById('success-modal').classList.remove('flex');
+            document.getElementById('kuesioner-form').reset();
+            document.getElementById('respondent-name').value = "";
+            document.getElementById('respondent-class').value = "";
+            document.getElementById('survey-progress').style.width = "0%";
+            document.getElementById('answered-badge').textContent = "0 / 20 Terjawab";
+
+            questionnaireData.forEach(q => {
+                const el = document.getElementById(`q-card-${q.id}`);
+                el.classList.remove('border-rose-400', 'bg-rose-50/10');
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // Modal Action: View stats
+        document.getElementById('modal-view-stats-btn').addEventListener('click', () => {
+            document.getElementById('success-modal').classList.add('hidden');
+            document.getElementById('success-modal').classList.remove('flex');
+            tabDashboardBtn.click();
+        });
+
+        // Export as JSON
+        document.getElementById('export-json-btn').addEventListener('click', () => {
+            if (allSubmissions.length === 0) {
+                showToast("Tidak ada data untuk diekspor.", true);
+                return;
+            }
+            const dataStr = JSON.stringify(allSubmissions, null, 2);
+            const el = document.createElement('textarea');
+            el.value = dataStr;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            showToast("Data JSON berhasil disalin ke clipboard!");
+        });
+
+        // Export as CSV File
+        document.getElementById('export-csv-btn').addEventListener('click', () => {
+            if (allSubmissions.length === 0) {
+                showToast("Tidak ada data untuk diekspor.", true);
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            // Header
+            let header = "Nama,Kelas,Waktu";
+            questionnaireData.forEach(q => {
+                header += `,Pertanyaan_${q.id}`;
+            });
+            csvContent += header + "\r\n";
+
+            // Body
+            allSubmissions.forEach(sub => {
+                const dateObj = sub.timestamp?.seconds ? new Date(sub.timestamp.seconds * 1000) : new Date();
+                const timeStr = dateObj.toISOString().replace(/,/g, '');
+                let row = `"${sub.name || 'Anonim'}","${sub.respondentClass || 'Umum'}","${timeStr}"`;
+                
+                questionnaireData.forEach(q => {
+                    const ans = sub.answers?.[q.id] || "-";
+                    row += `,"${ans}"`;
+                });
+                csvContent += row + "\r\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `kuesioner_ai_matematika_export_${Date.now()}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("CSV berhasil diunduh!");
+        });
+
+        // Initial render of questions
+        renderQuestions();
+
+    </script>
+</body>
+</html>
